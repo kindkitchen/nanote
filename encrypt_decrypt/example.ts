@@ -40,9 +40,21 @@ if (message === text_decoder.decode(cipher)) {
   throw "Encrypted message should be unreadable";
 }
 
+const private_key_to_export = await subtle.exportKey("jwk", privateKey);
+const exported_private_key = await subtle.importKey(
+  "jwk",
+  JSON.parse(JSON.stringify(private_key_to_export)),
+  {
+    name: NAME_OF_THE_ALGORITHM,
+    hash: NAME_OF_THE_HASH,
+  },
+  true,
+  ["decrypt"],
+);
+
 const decrypted = await subtle.decrypt(
   NAME_OF_THE_ALGORITHM,
-  privateKey,
+  exported_private_key,
   cipher,
 );
 
