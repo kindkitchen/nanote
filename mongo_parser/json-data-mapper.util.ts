@@ -1,5 +1,3 @@
-import type { JsonArrayType, JsonObjectType } from "../types.ts";
-
 export const JsonDataMapperUtil = {
   get_child,
   dynamodb_obj_to_json,
@@ -86,3 +84,18 @@ function dynamodb_obj_to_json(data: any) {
 function is_json_object(value: unknown) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
+
+
+export type JsonType =
+  | null
+  | string
+  | number
+  | boolean
+  | JsonObjectType
+  | JsonArrayType;
+
+export interface JsonObjectType {
+  [key: string]: JsonType;
+}
+
+export interface JsonArrayType extends Array<JsonType> {}
